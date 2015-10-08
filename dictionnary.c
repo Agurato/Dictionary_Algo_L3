@@ -35,15 +35,22 @@ void display_dictionnary(Dictionnary dictionnary){
 
 }
 
+/*If you don't want any more word in the dictionnaries use this function*/
 Dictionnary empty_dictionnary(Dictionnary dictionnary){
 
 
 
 }
 
-Dictionnary save_dictionnary(Dictionnary dictionnary){
+/*Save a dictionnary in a file*/
+int save_dictionnary(Dictionnary dictionnary){
 
 
 
 }
 
+/*Load dictionnary from a file*/
+Dictionnary load_dictionnary(){
+
+
+}

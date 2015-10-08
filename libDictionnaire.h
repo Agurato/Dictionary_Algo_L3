@@ -12,5 +12,5 @@ Boolean belongs_word(Dictionnary, Word);
 Boolean void_dictionnary(Dictionnary);
 void display_dictionnary(Dictionnary);
 Dictionnary empty_dictionnary(Dictionnary);
-Dictionnary save_dictionnary(Dictionnary);
+int save_dictionnary(Dictionnary);
 Dictionnary load_dictionnary();
