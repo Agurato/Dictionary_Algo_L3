@@ -9,14 +9,8 @@ Dictionnary create_dictionnary(){
 
 /*Add a word in the dictionnary if he doesn't exist*/
 Dictionnary add_word(Dictionnary dictionnary, Word word){
-/*Chercher dans un premier temps où il faut mettre le mot puis ajouter*/
-    if(belongs_dictionnary(word)){
-        write("0","The word already exist in the dictionnary",45);
-    }
-    else{
-
-
-    }
+    if(dictionnary == NULL){
+        dictionnary
     return dictionnary;
 }
 
@@ -31,14 +25,28 @@ Dictionnary delete_word(Dictionnary dictionnary, Word word){
 
 /*If the word word belongs to the dictionnary return True else return False*/
 Boolean belongs_word(Dictionnary dictionnary, Word word){
-
-
-
+    int numberLetters = sizeof(word);
+    int currentLetter = 0;
+    /*While we don't find a letter place after the research letter or the research letter is after and we can go at the right*/
+    while(dictionnary->car < *(word+currentLetter) ||
+            (dictionnary->car != *(word+currentLetters) && dictionnary->rightBrother != NULL)){
+        if(dictionnary->car == *(word+currentLetter)){
+            currentLetter++;
+            dictionnary = dictionnary->leftSon;
+        }
+        else{
+            dictionnary = dictionnary->rightBrother;
+        }
+    }
+    if(dictionnary->car = '\0' && numberLetters == (currentLetter - 1))
+        return True;
+    else
+        return False;
 }
 
 /*Is the dictionnary empty or not ?*/
 Boolean void_dictionnary(Dictionnary dictionnary){
-    return (dictionnary = NULL);
+    return (dictionnary == NULL);
 }
 
 /*Display words that are in the dictionnary*/
