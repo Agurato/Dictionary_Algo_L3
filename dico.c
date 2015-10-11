@@ -10,19 +10,20 @@ Dictionary createDictionary() {
 }
 
 Dictionary createLetter(char letter) {
-	Dictionary dico = NULL;
-	dico = (Dictionary) malloc(sizeof(Dictionary));
+	Dictionary dico = (Dictionary) malloc(sizeof(Dictionary));
 	dico->leftSon = dico->rightBrother = NULL;
 	dico->character = letter;
 
 	return dico;
 }
 
-int emptyDico(Dictionary dico) {
+Boolean emptyDico(Dictionary dico) {
 	return (dico == NULL);
 }
 
-int wordBelongs(Dictionary dico, Word word) {
+Boolean wordBelongs(Dictionary dico, Word word) {
+
+	printf("\nChecking for the word \"%s\" in the dictionary ...\n", word);
 
 	int currentChar = 0, lettersChecked = 0;
 	// currentChar is the position of the letter we are checking
@@ -35,24 +36,30 @@ int wordBelongs(Dictionary dico, Word word) {
 
 	// For each letter in the word we're searching for
 	for(currentChar = 0 ; starWord[currentChar] != '\0' ; currentChar++) {
-		printf("word[%d] = %c\n", currentChar, starWord[currentChar]);
+		printf("\nword[%d] = '%c'\n", currentChar, starWord[currentChar]);
 		// While the letter of the dico is inferior to the letter of the word
 		while(dico->character < starWord[currentChar]) {
-			printf("%c != %c", dico->character, starWord[currentChar]);
+			printf("'%c' != '%c'\n", dico->character, starWord[currentChar]);
 			// If he has a brother, we check the letter with the brother's
 			if(! emptyDico(dico->rightBrother)) {
 				dico = dico->rightBrother;
 			}
 			// Else, the letter doesn't belong to the dico, therefore the word doesn't neither
 			else {
-				return 0;
+				return false;
 			}
 		}
 		// If the letter of the dico is equal to the letter of the word
 		if(dico->character == starWord[currentChar]) {
+			printf("'%c' = '%c'\n", dico->character, starWord[currentChar]);
 			// We checked one more letter
 			lettersChecked ++;
 			printf("lettersChecked = %d/%d\n", lettersChecked, (int) strlen(starWord));
+		}
+		// If we went to far and passed the letter we were searching for
+		// This means the letter isn't in the dico and the word neither
+		else {
+			return false;
 		}
 		// If we haven't checked every letter yet
 		if(lettersChecked != strlen(starWord)) {
@@ -62,21 +69,41 @@ int wordBelongs(Dictionary dico, Word word) {
 			}
 			// Else the word doesn't belong to the dico
 			else {
-				return 0;
+				return false;
 			}
 		}
 		// If we checked every letter, the word belongs to the dico 
 		else {
-			return 1;
+			return true;
 		}
 	}
 
-	return 1;
+	return true;
 }
 
 Dictionary addWord(Dictionary dico, Word word) {
 
+	int currentChar = 0;
+	Boolean createDisabled = true;
 
+	for(currentChar = 0 ; word[currentChar] != '\0' ; currentChar++) {
+		printf("\nword[%d] = '%c'\n", currentChar, word[currentChar]);
+		// While the letter of the dico is inferior to the letter of the word
+		while((dico->character < word[currentChar]) && createDisabled) {
+			if(! emptyDico(dico->rightBrother)) {
+				dico = dico->rightBrother;
+			}
+			else {
+				createDisabled = false;
+			}
+		}
+		if(dico->character == word[currentChar]) {
+
+		}
+		else {
+			
+		}
+	}
 
 	return dico;
 }

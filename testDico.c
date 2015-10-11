@@ -7,6 +7,8 @@ int main(int argc, char const *argv[])
 	Dictionary dico = createDictionary();
 	dico = createLetter('A');
 	dico->leftSon = createLetter('*');
+	dico->rightBrother = createLetter('B');
+	dico->rightBrother->leftSon = createLetter('*');
 	
 	printf("dico created : ");
 
@@ -16,9 +18,9 @@ int main(int argc, char const *argv[])
 		printf("%c", dico->character);
 	}
 	
-	Word testWord = "A";
+	Word testWord = "B";
 	// char testWord[50] = "test";
-	printf("\ntestWord : %s\n", testWord);
+	printf("\ntestWord : \"%s\"\n", testWord);
 	
 	if(wordBelongs(dico, testWord)) {
 		printf("\"%s\" belongs to dico !", testWord);
