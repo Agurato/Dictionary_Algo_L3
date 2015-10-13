@@ -9,8 +9,13 @@ Dictionnary create_dictionnary(){
 
 /*Add a word in the dictionnary if he doesn't exist*/
 Dictionnary add_word(Dictionnary dictionnary, Word word){
+    Dictionnary newDictionnary = dictionnary;
+    int numberLetter = sizeof(word);
     if(dictionnary == NULL){
-        dictionnary
+        addWord(dictionnary, word, numberLetter);
+    }else{
+        while(dictionnary->letBrother->car-> <  *(word+currentLetter)
+    }
     return dictionnary;
 }
 
