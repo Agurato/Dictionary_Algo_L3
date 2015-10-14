@@ -1,6 +1,6 @@
 typedef struct node {
 	char character;
-	struct node *leftSon, *rightBrother;
+	struct node *leftSon, *rightBrother, *father, *leftBrother;
 }*Dictionary;
 
 typedef char* Word;
@@ -11,3 +11,4 @@ Dictionary createLetter(char letter);
 Boolean emptyDico(Dictionary dico);
 Boolean wordBelongs(Dictionary dico, Word word);
 Dictionary addWord(Dictionary dico, Word word);
+Dictionary last_letter(Dictionary dico, Word word);
