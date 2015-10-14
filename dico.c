@@ -36,7 +36,7 @@ Boolean wordBelongs(Dictionary dico, Word word) {
 
 	// For each letter in the word we're searching for
 	for(currentChar = 0 ; starWord[currentChar] != '\0' ; currentChar++) {
-		printf("\nword[%d] = '%c'\n", currentChar, starWord[currentChar]);
+		printf("word[%d] = '%c'\n", currentChar, starWord[currentChar]);
 		// While the letter of the dico is inferior to the letter of the word
 		while(dico->character < starWord[currentChar]) {
 			printf("'%c' != '%c'\n", dico->character, starWord[currentChar]);
@@ -82,28 +82,58 @@ Boolean wordBelongs(Dictionary dico, Word word) {
 }
 
 Dictionary addWord(Dictionary dico, Word word) {
+	printf("Trying to add the word \"%s\" into the dictionary\n", word);
+
+	if(wordBelongs(dico, word)) {
+		printf("The word \"%s\" already belongs to the dictionary\n", word);
+		return dico;
+	}
+	else {
+		printf("The word \"%s\" doesn't belong to the dictionary yet\n", word);
+	}
+
+	Dictionary initialDico = dico;
 
 	int currentChar = 0;
-	Boolean createDisabled = true;
+	Dictionary newLetter = createDictionary();
 
-	for(currentChar = 0 ; word[currentChar] != '\0' ; currentChar++) {
-		printf("\nword[%d] = '%c'\n", currentChar, word[currentChar]);
-		// While the letter of the dico is inferior to the letter of the word
-		while((dico->character < word[currentChar]) && createDisabled) {
-			if(! emptyDico(dico->rightBrother)) {
-				dico = dico->rightBrother;
-			}
-			else {
-				createDisabled = false;
+	// We add a star '*' at the end of the word
+	Word starWord = malloc(strlen(word) + 2);
+	strcpy(starWord, word);
+	strcat(starWord, "*");
+
+	for(currentChar = 0 ; starWord[currentChar] != '\0' ; currentChar ++) {
+		printf("dico->character = '%c' compared to word[%d] = '%c' \n", dico->character, currentChar, starWord[currentChar]);
+		if(dico->character != NULL) {
+			while(dico->character < starWord[currentChar]) {
+				if(! emptyDico(dico->rightBrother)) {
+					if(dico->rightBrother->character <= starWord[currentChar]) {
+						dico = dico->rightBrother;
+					}
+					else {
+						newLetter = createLetter(starWord[currentChar]);
+						newLetter->rightBrother = dico->rightBrother;
+						dico->rightBrother = newLetter;
+						dico = dico->rightBrother;
+					}
+				}
+				else {
+					newLetter = createLetter(starWord[currentChar]);
+					dico->rightBrother = newLetter;
+					dico = dico->rightBrother;
+				}
 			}
 		}
-		if(dico->character == word[currentChar]) {
-
+		if(dico->character == starWord[currentChar]) {
+			// T'es con : le leftSon a pas de caractère définit à sa création, impossible de comparer
+			dico = dico->leftSon;
+			dico->character = NULL;
 		}
 		else {
-			
+			printf("(dico->character = '%c') != (starWord[currentChar] = '%c')\n", dico->character,starWord[currentChar]);
 		}
 	}
 
-	return dico;
+	printf("Word added to the dictionary\n");
+	return initialDico;
 }

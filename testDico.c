@@ -7,16 +7,10 @@ int main(int argc, char const *argv[])
 	Dictionary dico = createDictionary();
 	dico = createLetter('A');
 	dico->leftSon = createLetter('*');
-	dico->rightBrother = createLetter('B');
-	dico->rightBrother->leftSon = createLetter('*');
-	
-	printf("dico created : ");
-
-	if(emptyDico(dico)) {
-		printf("NULL\n");
-	} else {
-		printf("%c", dico->character);
-	}
+	// dico->rightBrother = createLetter('B');
+	// dico->rightBrother->leftSon = createLetter('*');
+	Word newWord = "B";
+	dico = addWord(dico, newWord);
 	
 	Word testWord = "B";
 	// char testWord[50] = "test";
@@ -29,5 +23,6 @@ int main(int argc, char const *argv[])
 	}
 	
 	printf("\n");
+
 	return 0;
 }
