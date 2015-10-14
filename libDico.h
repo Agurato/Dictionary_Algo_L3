@@ -9,5 +9,5 @@ typedef enum {false, true} Boolean;
 Dictionary createDictionary();
 Dictionary createLetter(char letter);
 Boolean emptyDico(Dictionary dico);
-Boolean wordBelongs(Dictionary dico, char word[50]);
+Boolean wordBelongs(Dictionary dico, Word word);
 Dictionary addWord(Dictionary dico, Word word);
