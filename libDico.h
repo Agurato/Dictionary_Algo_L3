@@ -12,3 +12,4 @@ Boolean emptyDico(Dictionary dico);
 Boolean wordBelongs(Dictionary dico, Word word);
 Dictionary addWord(Dictionary dico, Word word);
 Dictionary last_letter(Dictionary dico, Word word);
+Dictionary delete_word(Dictionary,Word);
