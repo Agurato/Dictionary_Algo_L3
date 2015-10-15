@@ -3,15 +3,19 @@ C'est un fichier à part pour ne pas avoir à travailler à 2 sur le même fichi
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <malloc.h>
 #include "libDico.h"
 
 Dictionary createDictionary() {
 	return NULL;
 }
 
-Dictionary createLetter(char letter) {
-	Dictionary dico = (Dictionary) malloc(sizeof(Dictionary));
-	dico->leftSon = dico->rightBrother = NULL;
+Dictionary createLetter(char letter, Dictionary father) {
+	Dictionary dico = (Dictionary) malloc(sizeof(struct node));
+	dico->leftSon = NULL;
+	dico->rightBrother = NULL;
+	dico->leftBrother = NULL;
+	dico->father = father;
 	dico->character = letter;
 
 	return dico;
@@ -34,12 +38,15 @@ Boolean wordBelongs(Dictionary dico, Word word) {
 	strcpy(starWord, word);
 	strcat(starWord, "*");
 
+	if(emptyDico(dico)) {
+		return false;
+	}
+
 	// For each letter in the word we're searching for
 	for(currentChar = 0 ; starWord[currentChar] != '\0' ; currentChar++) {
-		printf("word[%d] = '%c'\n", currentChar, starWord[currentChar]);
 		// While the letter of the dico is inferior to the letter of the word
 		while(dico->character < starWord[currentChar]) {
-			printf("'%c' != '%c'\n", dico->character, starWord[currentChar]);
+			printf("\tdico->character('%c') != word[%d]('%c')\n", dico->character, currentChar, starWord[currentChar]);
 			// If he has a brother, we check the letter with the brother's
 			if(! emptyDico(dico->rightBrother)) {
 				dico = dico->rightBrother;
@@ -51,10 +58,10 @@ Boolean wordBelongs(Dictionary dico, Word word) {
 		}
 		// If the letter of the dico is equal to the letter of the word
 		if(dico->character == starWord[currentChar]) {
-			printf("'%c' = '%c'\n", dico->character, starWord[currentChar]);
+			printf("\tdico->character('%c') = word[%d]('%c')\n", dico->character, currentChar, starWord[currentChar]);
 			// We checked one more letter
 			lettersChecked ++;
-			printf("lettersChecked = %d/%d\n", lettersChecked, (int) strlen(starWord));
+			printf("\tlettersChecked = %d/%d\n", lettersChecked, (int) strlen(starWord));
 		}
 		// If we went to far and passed the letter we were searching for
 		// This means the letter isn't in the dico and the word neither
@@ -92,8 +99,6 @@ Dictionary addWord(Dictionary dico, Word word) {
 		printf("The word \"%s\" doesn't belong to the dictionary yet\n", word);
 	}
 
-	Dictionary initialDico = dico;
-
 	int currentChar = 0;
 	Dictionary newLetter = createDictionary();
 
@@ -103,49 +108,70 @@ Dictionary addWord(Dictionary dico, Word word) {
 	strcat(starWord, "*");
 
 	for(currentChar = 0 ; starWord[currentChar] != '\0' ; currentChar ++) {
-		printf("Adding starWord[%d] = '%c' \n", currentChar, starWord[currentChar]);
+		printf("\tAdding starWord[%d] = '%c' \n", currentChar, starWord[currentChar]);
 		/* If dictionary is empty, we add the letter and go on to the next */
-		if(emptyDico(dico)) {
-			dico = createLetter(starWord[currentChar]);
-			dico = dico->leftSon;
+		if(dico->character == '\0') {
+			printf("\tdico is empty\n");
+			dico = createLetter(starWord[currentChar], dico->father);
+			Dictionary son = createLetter('\0', dico);
+			dico->leftSon = son;
+			dico = son;
 		}
 		else {
+			printf("\tdico isn't empty\n");
 			while(dico->character < starWord[currentChar]) {
+				printf("\t\tdico->character('%c') < starWord[currentChar]('%c')\n", dico->character, starWord[currentChar]);
 				if(emptyDico(dico->rightBrother)) {
-					newLetter = createLetter(starWord[currentChar]);
+					printf("\t\tdico->rightBrother is empty\n");
+					newLetter = createLetter(starWord[currentChar], dico->father);
+					newLetter->leftBrother = dico;
 					dico->rightBrother = newLetter;
 					dico = dico->rightBrother;
 				}
 				else {
+					printf("\t\tdico->rightBrother isn't empty\n");
 					if(dico->rightBrother->character <= starWord[currentChar]) {
 						dico = dico->rightBrother;
 					}
 					else {
-						newLetter = createLetter(starWord[currentChar]);
+						newLetter = createLetter(starWord[currentChar], dico->father);
+						newLetter->leftBrother = dico;
 						newLetter->rightBrother = dico->rightBrother;
+						dico->rightBrother->leftBrother = newLetter;
 						dico->rightBrother = newLetter;
 						dico = dico->rightBrother;
 					}
 				}
 			}
 			if(dico->character == starWord[currentChar]) {
-				dico = dico->leftSon;
+				printf("\t\tdico->character('%c') = starWord[currentChar]('%c')\n", dico->character, starWord[currentChar]);
+				Dictionary son = createLetter('\0', dico);
+				dico->leftSon = son;
+				dico = son;
+
 			}
 			else {
-				printf("(dico->character = '%c') != (starWord[currentChar] = '%c')\n", dico->character,starWord[currentChar]);
+				printf("\t(dico->character = '%c') != (starWord[currentChar] = '%c')\n", dico->character,starWord[currentChar]);
 			}
 		}
 	}
 
-	printf("\"%s\" added to the dictionary\n", word);
-	return initialDico;
+	printf("\t\"%s\" added to the dictionary\n", word);
+
+	while(dico->father != NULL) {
+		dico = dico->father;
+	}
+	while(dico->leftBrother != NULL) {
+		dico = dico->leftBrother;
+	}
+
+	return dico;
 }
 
-/* Search the word with belongs_word and delete the Word*/
-
-// Dictionary delete_word(Dictionary dictionary, Word word){
+// /* Search the word with belongs_word and delete the Word*/
+// Dictionnary delete_word(Dictionary dictionary, Word word){
 //     Dictionary wordToDelete = NULL;
-//     if(!belongs_word(dictionary, word)){
+//     if(!belongs_word(dictionnary, word)){
 //         printf("Le mot a supprimer n'existe pas");
 //     }else{
 //         wordToDelete = last_letter(dictionary, word);

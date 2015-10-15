@@ -5,8 +5,8 @@
 int main(int argc, char const *argv[])
 {
 	Dictionary dico = createDictionary();
-	dico = createLetter('A');
-	dico->leftSon = createLetter('*');
+	dico = createLetter('A', NULL);
+	dico->leftSon = createLetter('*', dico);
 	// dico->rightBrother = createLetter('B');
 	// dico->rightBrother->leftSon = createLetter('*');
 	Word newWord = "Bateau";
