@@ -2,17 +2,18 @@
 #include <malloc.h>
 
 
-
+/*
 Dictionnary create_dictionnary(){
     return NULL;
 }
-
+*/
 /* Search the word with belongs_word and delete the Word*/
-Dictionnary delete_word(Dictionary dictionary, Word word){
+Dictionary delete_word(Dictionary dictionary, Word word){
     Dictionary wordToDelete = NULL;
-    if(!belongs_word(dictionnary, word)){
-        printf("Le mot a supprimer n'existe pas");
-    }else{
+  //  if(!belongs_word(dictionnary, word)){
+  //      printf("Le mot a supprimer n'existe pas");
+ //   }
+//else{
         wordToDelete = last_letter(dictionary, word);
         /*S'il n'a pas de frère droit, ie : soit juste un père soit juste un frère gauche*/
         while(wordToDelete->rightBrother == NULL && wordToDelete->leftBrother == NULL){
@@ -26,13 +27,13 @@ Dictionnary delete_word(Dictionary dictionary, Word word){
         /*S'il à uniquement un frère gauche*/
         if(wordToDelete->leftBrother != NULL && wordToDelete->rightBrother == NULL){
             wordToDelete = wordToDelete->leftBrother;
-            free(wordToDelte->rightBrother);
+            free(wordToDelete->rightBrother);
             wordToDelete->rightBrother = NULL;
         }
         /*S'il à uniquement un frère droit*/
         else if(wordToDelete->leftBrother == NULL && wordToDelete->rightBrother != NULL){
             wordToDelete->rightBrother->leftBrother = NULL;
-            dictionary letter = wordToDelete->father;
+            Dictionary letter = wordToDelete->father;
             letter->leftSon = wordToDelete->rightBrother;
             free(wordToDelete);
             wordToDelete = letter;
@@ -44,12 +45,12 @@ Dictionnary delete_word(Dictionary dictionary, Word word){
           wordToDelete->rightBrother->leftBrother = wordToDelete->leftBrother;
           free(wordToDelete);
           wordToDelete = letter;
-        }
-    }
+         }
+   // }
     return dictionary;
 }
 
-Dictionnary last_letter(Dictionary dico, Word word){
+Dictionary last_letter(Dictionary dico, Word word){
 	int currentChar = 0, lettersChecked = 0;
 	// currentChar is the position of the letter we are checking
 	// lettersChecked is the number of letters of the word belonging to the dictionary
@@ -107,33 +108,33 @@ Dictionnary last_letter(Dictionary dico, Word word){
 }
 
 /*Is the dictionnary empty or not ?*/
-Boolean void_dictionnary(Dictionary dictionary){
+/*Boolean void_dictionnary(Dictionary dictionary){
     return (dictionary == NULL);
 }
 
 /*Display words that are in the dictionnary*/
-void display_dictionary(Dictionary dictionary){
+/*void display_dictionary(Dictionary dictionary){
 
 
 
 }
 
 /*If you don't want any more word in the dictionnaries use this function*/
-Dictionnary empty_dictionnary(Dictionary dictionary){
+/*Dictionnary empty_dictionnary(Dictionary dictionary){
 
 
 
 }
 
 /*Save a dictionnary in a file*/
-int save_dictionnary(Dictionary dictionary){
+/*int save_dictionnary(Dictionary dictionary){
 
 
 
 }
 
 /*Load dictionnary from a file*/
-Dictionnary load_dictionnary(){
+/*Dictionnary load_dictionnary(){
 
 
-}
+}*/
