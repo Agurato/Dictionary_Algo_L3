@@ -9,10 +9,12 @@ int main(int argc, char const *argv[])
 	dico->leftSon = createLetter('*', dico);
 	// dico->rightBrother = createLetter('B');
 	// dico->rightBrother->leftSon = createLetter('*');
-	Word newWord = "Bateau";
-	dico = addWord(dico, newWord);
 	
-	Word testWord = "Bateau";
+	// Word newWord = "Bateau";
+	// dico = addWord(dico, newWord);
+
+	dico = delete_word(dico, "A");
+	Word testWord = "A";
 	// char testWord[50] = "test";
 	printf("\ntestWord : \"%s\"\n", testWord);
 	
