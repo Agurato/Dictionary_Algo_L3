@@ -10,10 +10,10 @@ Dictionnary create_dictionnary(){
 /* Search the word with belongs_word and delete the Word*/
 Dictionary delete_word(Dictionary dictionary, Word word){
     Dictionary wordToDelete = NULL;
-  //  if(!belongs_word(dictionnary, word)){
-  //      printf("Le mot a supprimer n'existe pas");
- //   }
-//else{
+    if(!wordBelongs(dictionnary, word)){
+        printf("Le mot a supprimer n'existe pas");
+    }
+    else{
         wordToDelete = last_letter(dictionary, word);
         /*S'il n'a pas de frère droit, ie : soit juste un père soit juste un frère gauche*/
         while(wordToDelete->rightBrother == NULL && wordToDelete->leftBrother == NULL){
@@ -46,7 +46,7 @@ Dictionary delete_word(Dictionary dictionary, Word word){
           free(wordToDelete);
           wordToDelete = letter;
          }
-   // }
+    }
     return dictionary;
 }
 
