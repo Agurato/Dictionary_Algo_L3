@@ -88,6 +88,37 @@ Boolean wordBelongs(Dictionary dico, Word word) {
 	return true;
 }
 
+Dictionary displayDico(Dictionary dico, Word currentWord) {
+	// If the dico isn't empty
+	if(! emptyDico(dico)) {
+		// If we are at the end of the word
+		if(dico->character == '*') {
+			// We display it and go on with the next character
+			printf("%s\n", currentWord);
+			return dico;
+		}
+
+		// If there is a left son
+		if(! emptyDico(dico->leftSon)) {
+			// We add the new character to the word to display
+			int length = strlen(currentWord);
+			Word newWord = malloc(length+2);
+			strcpy(newWord, currentWord);	
+			newWord[length] = dico->character;
+			newWord[length+1] = '\0';
+
+			// We continue with the son
+			dico->leftSon = displayDico(dico->leftSon, newWord);
+		}
+
+		// If there is a right brother, we continue with him
+		if(! emptyDico(dico->rightBrother)) {
+			dico->rightBrother = displayDico(dico->rightBrother, currentWord);
+		}
+	}
+	return dico;
+}
+
 Dictionary addWordRecursive(Dictionary dico, Word word, int position) {
 	// If we didn't finish to add the word yet
 	if(position < strlen(word)) {
@@ -149,6 +180,69 @@ Dictionary addWordRecursive(Dictionary dico, Word word, int position) {
 
 	return dico;
 }
+
+Dictionary deleteWordRecursive(Dictionary dico, Word word, int position) {
+	// If we didn't finish to add the word yet
+	if(position < strlen(word)) {
+		printf("\nword[%d]='%c'", position, word[position]);
+		// If there is a letter on the dico
+		if(! emptyDico(dico)) {
+			printf(" \\ dico->character='%c'", dico->character);
+			// If the letter of the dictionary is inferior to the letter of the word 
+			if(dico->character < word[position]) {
+				// If there is a right brother
+				if(! emptyDico(dico->rightBrother)) {
+					// If the letter of the brother is inferior or equal to the letter of the word
+					if(dico->rightBrother->character <= word[position]) {
+						// We're going on with the brother
+						dico->rightBrother = addWordRecursive(dico->rightBrother, word, position);
+					}
+					// If the letter of the brother is superior to the letter of the word
+					else {
+						// We create a new letter
+						Dictionary newLetter = createLetter(word[position]);
+						// The right brother of the new letter is the right brother of the dico
+						newLetter->rightBrother = dico->rightBrother;
+						// The new letter is the right brother of the dico
+						dico->rightBrother = newLetter;
+						// We add the next letter on the son
+						dico->leftSon = addWordRecursive(dico->leftSon, word, position+1);
+					}
+				}
+				// If there isn't a right brother
+				else {
+					printf(" \\ Adding it ...");
+					// We add the letter of the word as the right brother
+					dico->rightBrother = createLetter(word[position]);
+					// We add the next letter on the right brother's son
+					dico->rightBrother->leftSon = addWordRecursive(dico->rightBrother->leftSon, word, position+1);
+				}
+			}
+			// If the letter of the dico is equal to the letter of the word
+			else if(dico->character == word[position]) {
+				// We add the next letter on the son
+				dico->leftSon = addWordRecursive(dico->leftSon, word, position+1);
+			}
+			else {
+				printf("dico->character > word[position] : PROBLEM\n");
+			}
+		}
+		// If there isn't any letter on the dico
+		else {
+			printf(" \\ Adding it ...");
+			// We create the letter
+			dico = createLetter(word[position]);
+			// We add the new letter on the son
+			dico->leftSon = addWordRecursive(dico->leftSon, word, position+1);
+		}
+	}
+	else {
+		return dico;
+	}
+
+	return dico;
+}
+
 /*
 Dictionary addWord(Dictionary dico, Word word) {
 	printf("Trying to add the word \"%s\" into the dictionary\n", word);
