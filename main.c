@@ -1,10 +1,10 @@
 #include "libDico.h"
 
 int chooseOption();
-
+int type_n();
 int main(int argc, char const *argv[])
 {
-	int choice = 0;
+    int choice = 0;
 
 	printf("\t\tHello and welcome to the dictionary factory !\n");
 
@@ -19,7 +19,12 @@ int main(int argc, char const *argv[])
 			case 1 :
 				printf("Please enter the word you desire to add : \n");
 				Word word = malloc(25*sizeof(char));
-				fgets(word, sizeof(word), stdin);
+                char buf[25] = {0};
+			//	fgets(word, sizeof(word), stdin);
+                while(getchar() != '\n'){
+                    read(0,word,25);
+                    printf("Word contient : %s\n",word);
+                }
 
 				Word starWord = malloc(strlen(word) + 2);
 				strcpy(starWord, word);
@@ -49,7 +54,6 @@ int main(int argc, char const *argv[])
 				break;
 			default :
 				printf("Error in the matrix ... \n");
-				break;
 		}
 	}
 
@@ -73,9 +77,17 @@ int chooseOption() {
 		printf("    8) Exit software\n\n");
 
 		printf("Enter your choice : ");
-		scanf("%d", &choice);
+        choice = type_n();
 		printf("\n");
-	} while(choice < 1 || choice > 8);
+	} while((choice < 1 || choice > 8));
 
 	return choice;
 }
+
+int type_n(){
+    char c = getchar();
+    if(isdigit(c))
+        return (int) c - '0';
+    return -1;
+}
+
