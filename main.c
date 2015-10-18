@@ -1,14 +1,56 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "libDico.h"
+
+int chooseOption();
 
 int main(int argc, char const *argv[])
 {
-	int choice;
+	int choice = 0;
 
-	printf("\t\tHello and welcome to the dictionnary factory !\n");
-	choice = chooseOption();
-	// interact();
+	printf("\t\tHello and welcome to the dictionary factory !\n");
+
+	Dictionary dico = createDictionary();
+	
+	while(choice != 8) {
+		choice = chooseOption();
+
+		/* Do the selected option */
+
+		switch(choice) {
+			case 1 :
+				printf("Please enter the word you desire to add : \n");
+				Word word = malloc(25*sizeof(char));
+				fgets(word, sizeof(word), stdin);
+
+				Word starWord = malloc(strlen(word) + 2);
+				strcpy(starWord, word);
+				strcat(starWord, "*");
+				dico = addWordRecursive(dico, starWord, 0);
+				break;
+			case 2 :
+				printf("Displaying dictionaries ...\n");
+				break;
+			case 3 :
+				printf("Deleting dictionary ... \n");
+				break;
+			case 4 :
+				printf("Adding word to dictionary ... \n");
+				break;
+			case 5 :
+				printf("Deleting word in dictionary ... \n");
+				break;
+			case 6 :
+				printf("Searching for word in dictionary ... \n");
+				break;
+			case 7 :
+				break;
+			default :
+				printf("Error in the matrix ... \n");
+				break;
+		}
+	}
 
 	printf("\nMade by MONOT Vincent & VALENTIN Paul\n\n");
 
@@ -20,53 +62,19 @@ int chooseOption() {
 
 	do {
 		printf("Please choose an option in the following list :\n");
-		printf("    1) Create dictionnary.\n");
-		printf("    2) Display dictionnary.\n");
-		printf("    3) Delete dictionnary.\n");
-		printf("    4) Add a word in a dictionnary.\n");
-		printf("    5) Delete a word in a dictionnary.\n");
-		printf("    6) Is the word in the dictionnary ?\n\n");
-		printf("    7) Exit software\n\n");
+		printf("    1) Add a word.\n");
+		printf("    2) Delete a word.\n");
+		printf("    3) Display dictionary.\n");
+		printf("    4) Is the word in the dictionary?\n");
+		printf("    5) Empty dictionary.\n");
+		printf("    6) Save dictionary.\n");
+		printf("    7) Load dictionary.\n\n");
+		printf("    8) Exit software\n\n");
 
 		printf("Enter your choice : ");
 		scanf("%d", &choice);
 		printf("\n");
-	} while(choice < 1 || choice > 7);
+	} while(choice < 1 || choice > 8);
 
 	return choice;
-}
-
-int interact() {
-	char choice[100] = "";
-	int quit = 0;
-
-	while(!quit) {
-		printf("\n> ");
-
-		fgets(choice, sizeof(choice), stdin);
-
-		if((strcmp(choice, "help") == 0) || (strcmp(choice, "?") == 0)) {
-			printf("Help displayed");
-		} else if((strcmp(choice, "list dictionnaries")) == 0 || (strcmp(choice, "list dicos") == 0)) {
-			printf("Displays dictionnaries");
-		} else if(strcmp(choice, "select") == 32) {
-			printf("Checking if the dictionnary exists ...");
-		} else if((strcmp(choice, "exit") == 0) || (strcmp(choice, "quit") == 0)) {
-			printf("Exiting the software");
-			quit = 1;
-		} else {
-			printf("String : %s\n", choice);
-			printf("? : %d\n", strcmp(choice, "?"));
-			printf("help : %d\n", strcmp(choice, "help"));
-			printf("list dictionnaries : %d\n", strcmp(choice, "list dictionnaries"));
-			printf("list dicos : %d\n", strcmp(choice, "list dicos"));
-			printf("select : %d\n", strcmp(choice, "select"));
-			printf("exit : %d\n", strcmp(choice, "exit"));
-			printf("quit : %d\n", strcmp(choice, "quit"));
-		}
-
-		memset(choice, 0, sizeof(choice));
-		printf("Reset : %s", choice);
-	}
-	printf("\n");
 }

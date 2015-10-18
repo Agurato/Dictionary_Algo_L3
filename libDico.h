@@ -13,7 +13,7 @@ Boolean emptyDico(Dictionary dico);
 Boolean wordBelongs(Dictionary dico, Word word);
 Dictionary displayDico(Dictionary dico, Word currentWord);
 Dictionary addWordRecursive(Dictionary dico, Word word, int position);
-Dictionary deleteWordRecursive(Dictionary dico, Word word, int position, Boolean deleting);
+Dictionary deleteWordRecursive(Dictionary dico, Word word, int position, int lastBrother);
 int lastBrotherPosition(Dictionary dico, Word word);
 Dictionary addWord(Dictionary dico, Word word);
 Dictionary last_letter(Dictionary dico, Word word);
