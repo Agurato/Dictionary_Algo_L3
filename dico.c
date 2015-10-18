@@ -197,53 +197,83 @@ Dictionary addWordRecursive(Dictionary dico, Word word, int position) {
 	return dico;
 }
 
-Dictionary deleteWordRecursive(Dictionary dico, Word word, int position, Boolean deleting) {
-	printf("position=%d/%d : %c/%c \\ deleting=%d\n", position, (int) strlen(word)-1, word[position], dico->character, deleting);
+Dictionary deleteWordRecursive(Dictionary dico, Word word, int position, int lastBrother) {
+	// printf("position=%d/%d : %c-%c \\ lastBrother=%d\n", position, (int) strlen(word)-1, word[position], dico->character, lastBrother);
+	Boolean isLeftSon = false;
 	if(position < strlen(word)-2) {
+		if(position == lastBrother) {
+			if(dico->leftSon->character == word[position+1]) {
+				isLeftSon = true;
+			}
+		}
+
 		if(dico->character == word[position]) {
-			dico->leftSon = deleteWordRecursive(dico->leftSon, word, position+1, false);
+			dico->leftSon = deleteWordRecursive(dico->leftSon, word, position+1, lastBrother);
 		}
 		else {
-			dico->rightBrother = deleteWordRecursive(dico->rightBrother, word, position, false);
+			dico->rightBrother = deleteWordRecursive(dico->rightBrother, word, position, lastBrother);
 		}
-		deleting = true;
 	}
 
-
-	if(deleting) {
+	printf("position:%d\n", position);
+	if(position > lastBrother) {
+		printf("Deleting son of word[%d]='%c' : '%c'\n", position, word[position], word[position+1]);
 		free(dico->leftSon);
-		return dico;
 	}
-	
-	/*
-	if(deleting) {
-		while(dico->leftSon->character < word[position+1]) {
-
-		}
-
+	else if((position == lastBrother)) {
+		printf("Deleting son of word[%d]='%c' : '%c'\n", position, word[position], word[position+1]);
+		free(dico->leftSon);
+	}
+	else if(position == lastBrother-1) {
+		// If he is the left son
 		if(dico->leftSon->character == word[position+1]) {
+			// If he has right brother
 			if(! emptyDico(dico->leftSon->rightBrother)) {
+				// We delete it and make the connections
 				Dictionary tempDico = dico->leftSon->rightBrother;
+				printf("Deleting son of word[%d]='%c' : '%c'\n", position, word[position], word[position+1]);
 				free(dico->leftSon);
 				dico->leftSon = tempDico;
-				deleting = false;
 			}
 			else {
-				free(dico->leftSon);
+				printf("emptyDico(dico->leftSon->rightBrother)\n");
 			}
 		}
+		// If he is a right brother
 		else {
-
+			Dictionary sonDico = dico->leftSon;
+			while(sonDico->character < word[position+1]) {
+				if(! emptyDico(sonDico->rightBrother)) {
+					if(sonDico->rightBrother->character < word[position+1]) {
+						sonDico = sonDico->rightBrother;
+					}
+					else if(sonDico->rightBrother->character == word[position+1]) {
+						if(! emptyDico(sonDico->rightBrother->rightBrother)) {
+							Dictionary tempDico = sonDico->rightBrother->rightBrother;
+							printf("Deleting son of word[%d]='%c' via brother='%c': '%c'\n", position, word[position], sonDico->character, word[position+1]);
+							free(sonDico->rightBrother);
+							sonDico->rightBrother = tempDico;
+							return dico;
+						}
+						else {
+							free(sonDico->rightBrother);
+							return dico;
+						}
+					}
+				}
+				else {
+					printf("emptyDico(sonDico->rightBrother)\n");
+				}
+			}
 		}
 	}
-	*/
+	
 	return dico;
 }
 
 int lastBrotherPosition(Dictionary dico, Word word) {
 	int currentChar = 0, position = 0;
 
-	// We add a star '*' at the end of the word
 	Word starWord = malloc(strlen(word) + 2);
 	strcpy(starWord, word);
 	strcat(starWord, "*");
