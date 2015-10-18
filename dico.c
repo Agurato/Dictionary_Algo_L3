@@ -1,5 +1,3 @@
-/* Ce sont mes essais de fonctions, stp n'y touche pas 
-C'est un fichier à part pour ne pas avoir à travailler à 2 sur le même fichier et risquer des problèmes */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -93,8 +91,14 @@ Dictionary displayDico(Dictionary dico, Word currentWord) {
 	if(! emptyDico(dico)) {
 		// If we are at the end of the word
 		if(dico->character == '*') {
-			// We display it and go on with the next character
+			// We display it
 			printf("%s\n", currentWord);
+			// If he has a right brother
+			if(! emptyDico(dico->rightBrother)) {
+				// We go on with the brother
+				dico->rightBrother = displayDico(dico->rightBrother, currentWord);
+			}
+			// We continue with the next word
 			return dico;
 		}
 
@@ -193,66 +197,74 @@ Dictionary addWordRecursive(Dictionary dico, Word word, int position) {
 	return dico;
 }
 
-Dictionary deleteWordRecursive(Dictionary dico, Word word, int position) {
-	// If we didn't finish to add the word yet
-	if(position < strlen(word)) {
-		printf("\nword[%d]='%c'", position, word[position]);
-		// If there is a letter on the dico
-		if(! emptyDico(dico)) {
-			printf(" \\ dico->character='%c'", dico->character);
-			// If the letter of the dictionary is inferior to the letter of the word 
-			if(dico->character < word[position]) {
-				// If there is a right brother
-				if(! emptyDico(dico->rightBrother)) {
-					// If the letter of the brother is inferior or equal to the letter of the word
-					if(dico->rightBrother->character <= word[position]) {
-						// We're going on with the brother
-						dico->rightBrother = addWordRecursive(dico->rightBrother, word, position);
-					}
-					// If the letter of the brother is superior to the letter of the word
-					else {
-						// We create a new letter
-						Dictionary newLetter = createLetter(word[position]);
-						// The right brother of the new letter is the right brother of the dico
-						newLetter->rightBrother = dico->rightBrother;
-						// The new letter is the right brother of the dico
-						dico->rightBrother = newLetter;
-						// We add the next letter on the son
-						dico->leftSon = addWordRecursive(dico->leftSon, word, position+1);
-					}
-				}
-				// If there isn't a right brother
-				else {
-					printf(" \\ Adding it ...");
-					// We add the letter of the word as the right brother
-					dico->rightBrother = createLetter(word[position]);
-					// We add the next letter on the right brother's son
-					dico->rightBrother->leftSon = addWordRecursive(dico->rightBrother->leftSon, word, position+1);
-				}
-			}
-			// If the letter of the dico is equal to the letter of the word
-			else if(dico->character == word[position]) {
-				// We add the next letter on the son
-				dico->leftSon = addWordRecursive(dico->leftSon, word, position+1);
-			}
-			else {
-				printf("dico->character > word[position] : PROBLEM\n");
-			}
+Dictionary deleteWordRecursive(Dictionary dico, Word word, int position, Boolean deleting) {
+	printf("position=%d/%d : %c/%c \\ deleting=%d\n", position, (int) strlen(word)-1, word[position], dico->character, deleting);
+	if(position < strlen(word)-2) {
+		if(dico->character == word[position]) {
+			dico->leftSon = deleteWordRecursive(dico->leftSon, word, position+1, false);
 		}
-		// If there isn't any letter on the dico
 		else {
-			printf(" \\ Adding it ...");
-			// We create the letter
-			dico = createLetter(word[position]);
-			// We add the new letter on the son
-			dico->leftSon = addWordRecursive(dico->leftSon, word, position+1);
+			dico->rightBrother = deleteWordRecursive(dico->rightBrother, word, position, false);
 		}
-	}
-	else {
-		return dico;
+		deleting = true;
 	}
 
+
+	if(deleting) {
+		free(dico->leftSon);
+		return dico;
+	}
+	
+	/*
+	if(deleting) {
+		while(dico->leftSon->character < word[position+1]) {
+
+		}
+
+		if(dico->leftSon->character == word[position+1]) {
+			if(! emptyDico(dico->leftSon->rightBrother)) {
+				Dictionary tempDico = dico->leftSon->rightBrother;
+				free(dico->leftSon);
+				dico->leftSon = tempDico;
+				deleting = false;
+			}
+			else {
+				free(dico->leftSon);
+			}
+		}
+		else {
+
+		}
+	}
+	*/
 	return dico;
+}
+
+int lastBrotherPosition(Dictionary dico, Word word) {
+	int currentChar = 0, position = 0;
+
+	// We add a star '*' at the end of the word
+	Word starWord = malloc(strlen(word) + 2);
+	strcpy(starWord, word);
+	strcat(starWord, "*");
+
+	for(currentChar = 0 ; starWord[currentChar] != '\0' ; currentChar ++) {
+		printf("starWord[%d]='%c' \\", currentChar, starWord[currentChar]);
+		if(! emptyDico(dico->rightBrother)) {
+			printf(" count ++\n");
+			position = currentChar;
+		}
+		else {
+			printf("\n");
+		}
+		while(dico->character < starWord[currentChar]) {
+			dico = dico->rightBrother;
+		}
+		if(! emptyDico(dico->leftSon)) {
+			dico = dico->leftSon;
+		}
+	}
+	return position;
 }
 
 /*
@@ -340,46 +352,46 @@ Dictionary addWord(Dictionary dico, Word word) {
 
 /* Search the word with belongs_word and delete the Word*/
 // Dictionary delete_word(Dictionary dictionary, Word word){
-//     Dictionary wordToDelete = NULL;
-//     if(!wordBelongs(dictionary, word)){
-//         printf("Le mot a supprimer n'existe pas");
-//         return dictionary;
-//     }
-//     else{
-//         wordToDelete = last_letter(dictionary, word);
-//         /*S'il n'a pas de frère droit, ie : soit juste un père soit juste un frère gauche*/
-//         while(wordToDelete->rightBrother == NULL && wordToDelete->leftBrother == NULL){
-//             /*Il faut supprimer le père*/
-//             wordToDelete = wordToDelete->father;
-//             free(wordToDelete->leftSon);
-//             wordToDelete->leftSon = NULL;
-//         }
-//         /*Une fois que toutes les lettres sans frère droit sont supprimer
-//          * il ne reste que à supprimer la lettre avec un frère droit, ou gauche */
-//         /*S'il à uniquement un frère gauche*/
-//         if(wordToDelete->leftBrother != NULL && wordToDelete->rightBrother == NULL){
-//             wordToDelete = wordToDelete->leftBrother;
-//             free(wordToDelete->rightBrother);
-//             wordToDelete->rightBrother = NULL;
-//         }
-//         /*S'il à uniquement un frère droit*/
-//         else if(wordToDelete->leftBrother == NULL && wordToDelete->rightBrother != NULL){
-//             wordToDelete->rightBrother->leftBrother = NULL;
-//             Dictionary letter = wordToDelete->father;
-//             letter->leftSon = wordToDelete->rightBrother;
-//             free(wordToDelete);
-//             wordToDelete = letter;
-//         }
-//         /*S'il à un frère droit et un gauche*/
-//         else{
-//           Dictionary letter = wordToDelete->leftBrother;
-//           wordToDelete->leftBrother->rightBrother = wordToDelete->rightBrother;
-//           wordToDelete->rightBrother->leftBrother = wordToDelete->leftBrother;
-//           free(wordToDelete);
-//           wordToDelete = letter;
-//          }
-//     }
-//     return dictionary;
+//	 Dictionary wordToDelete = NULL;
+//	 if(!wordBelongs(dictionary, word)){
+//		 printf("Le mot a supprimer n'existe pas");
+//		 return dictionary;
+//	 }
+//	 else{
+//		 wordToDelete = last_letter(dictionary, word);
+//		 /*S'il n'a pas de frère droit, ie : soit juste un père soit juste un frère gauche*/
+//		 while(wordToDelete->rightBrother == NULL && wordToDelete->leftBrother == NULL){
+//			 /*Il faut supprimer le père*/
+//			 wordToDelete = wordToDelete->father;
+//			 free(wordToDelete->leftSon);
+//			 wordToDelete->leftSon = NULL;
+//		 }
+//		 /*Une fois que toutes les lettres sans frère droit sont supprimer
+//		  * il ne reste que à supprimer la lettre avec un frère droit, ou gauche */
+//		 /*S'il à uniquement un frère gauche*/
+//		 if(wordToDelete->leftBrother != NULL && wordToDelete->rightBrother == NULL){
+//			 wordToDelete = wordToDelete->leftBrother;
+//			 free(wordToDelete->rightBrother);
+//			 wordToDelete->rightBrother = NULL;
+//		 }
+//		 /*S'il à uniquement un frère droit*/
+//		 else if(wordToDelete->leftBrother == NULL && wordToDelete->rightBrother != NULL){
+//			 wordToDelete->rightBrother->leftBrother = NULL;
+//			 Dictionary letter = wordToDelete->father;
+//			 letter->leftSon = wordToDelete->rightBrother;
+//			 free(wordToDelete);
+//			 wordToDelete = letter;
+//		 }
+//		 /*S'il à un frère droit et un gauche*/
+//		 else{
+//		   Dictionary letter = wordToDelete->leftBrother;
+//		   wordToDelete->leftBrother->rightBrother = wordToDelete->rightBrother;
+//		   wordToDelete->rightBrother->leftBrother = wordToDelete->leftBrother;
+//		   free(wordToDelete);
+//		   wordToDelete = letter;
+//		  }
+//	 }
+//	 return dictionary;
 // }
 
 // /* Function which return the pointeur of the word's last letter that we want delete
@@ -404,5 +416,5 @@ Dictionary addWord(Dictionary dico, Word word) {
 // 			dico = dico->leftSon;
 // 		}
 // 	}
-//     return dico;
+//	 return dico;
 // }

@@ -34,22 +34,36 @@ int main(int argc, char const *argv[])
 		printf("\n");
 	}
 
+	newWord = "Batailles";
+	starWord = malloc(strlen(newWord) + 2);
+	strcpy(starWord, newWord);
+	strcat(starWord, "*");
+	if(! wordBelongs(dico, newWord)) {
+		dico = addWordRecursive(dico, starWord, 0);
+		printf("\n");
+	}
+
 	printf("\n\nDisplaying dictionary : \n\n");
 	displayDico(dico, "");
 
+	printf("Bataille : last stage where brother = %d\n", lastBrotherPosition(dico, "Bataille"));
+	printf("Batailles : last stage where brother = %d\n", lastBrotherPosition(dico, "Batailles"));
+	printf("Bateau : last stage where brother = %d\n", lastBrotherPosition(dico, "Bateau"));
+	printf("Batiment : last stage where brother = %d\n", lastBrotherPosition(dico, "Batiment"));
+
 	/*
-	if(wordBelongs(dico, newWord)) {
-		dico = deleteWordRecursive(dico, starWord, strlen(starWord));
+	Word oldWord = "Bateau";
+	starWord = malloc(strlen(oldWord) + 2);
+	strcpy(starWord, oldWord);
+	strcat(starWord, "*");
+	if(wordBelongs(dico, oldWord)) {
+		dico = deleteWordRecursive(dico, starWord, 0, false);
+		printf("\n");
 	}
 	
-	printf("\nAfter deleting the word :\n");
-	if(wordBelongs(dico, newWord)) {
-		printf("\t\"%s\" belongs to dico !", newWord);
-	} else {
-		printf("\t\"%s\" doesn't belong to dico", newWord);
-	}
+	printf("\n\nDisplaying dictionary : \n\n");
+	displayDico(dico, "");
 	*/
-
 	printf("\n");
 
 	return 0;
