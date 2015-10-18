@@ -1,3 +1,9 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <string.h>
+#include <malloc.h>
+
 typedef struct node {
 	char character;
 	struct node *leftSon, *rightBrother;
@@ -18,3 +24,6 @@ int lastBrotherPosition(Dictionary dico, Word word);
 Dictionary addWord(Dictionary dico, Word word);
 Dictionary last_letter(Dictionary dico, Word word);
 Dictionary delete_word(Dictionary dictionary, Word word);
+
+Dictionary save_dico(Dictionary,Word,int);
+Dictionary load_dico();

@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "libDico.h"
 
 int chooseOption();
@@ -43,8 +40,12 @@ int main(int argc, char const *argv[])
 				break;
 			case 6 :
 				printf("Searching for word in dictionary ... \n");
+                Word wordSave = malloc(27*sizeof(char));
+                dico = save_dico(dico,wordSave,0);
 				break;
 			case 7 :
+                printf("We will load the dictionary\n");
+                /* dico = load_dictionary()*/
 				break;
 			default :
 				printf("Error in the matrix ... \n");

@@ -1,13 +1,13 @@
-all: dictionnary
+all: dictionary
 
-dictionnary: main.o dictionnary.o
-	gcc -o dictionnary main.o dictionnary.o
+dictionary: main.o dictionary.o
+	gcc -o dictionary main.o dictionary.o
 
-dictionnary.o: dictionnary.c libdictionnary.h
-	gcc -c dictionnary.c
+dictionary.o: dictionary.c libDico.h
+	gcc -c dictionary.c
 
 main.o : main.c 
 	gcc -c main.c
 
 clean:
-	rm -fr *.o dictionnary
+	rm -fr *.o dictionary
