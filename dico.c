@@ -130,9 +130,9 @@ Dictionary addWordRecursive(Dictionary dico, Word word, int position) {
 			if(dico->character < word[position]) {
 				// If there is a right brother
 				if(! emptyDico(dico->rightBrother)) {
-					// If the letter of the brother is inferior or equal to the letter of the word
+					// If the letter of the right brother is inferior or equal to the letter of the word
 					if(dico->rightBrother->character <= word[position]) {
-						// We're going on with the brother
+						// We're going on with the right brother
 						dico->rightBrother = addWordRecursive(dico->rightBrother, word, position);
 					}
 					// If the letter of the brother is superior to the letter of the word
@@ -158,6 +158,18 @@ Dictionary addWordRecursive(Dictionary dico, Word word, int position) {
 			}
 			// If the letter of the dico is equal to the letter of the word
 			else if(dico->character == word[position]) {
+				// If there is a son
+				if(! emptyDico(dico->leftSon)) {
+					// If the letter of the son is superior to the letter of the next letter of the word
+					if(dico->leftSon->character > word[position+1]) {
+						// We create a new letter with the next letter of the word
+						Dictionary newLetter = createLetter(word[position+1]);
+						// The left son of the dico is now the right brother of the new letter
+						newLetter->rightBrother = dico->leftSon;
+						// The new letter is the left son of the dico
+						dico->leftSon = newLetter;
+					}
+				}
 				// We add the next letter on the son
 				dico->leftSon = addWordRecursive(dico->leftSon, word, position+1);
 			}
