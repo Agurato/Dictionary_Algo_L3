@@ -49,19 +49,25 @@ int main(int argc, char const *argv[])
 				break;
 			case 6 :
 				printf("Searching for word in dictionary ... \n");
+                int fd;
+                fd = open("saveDictionary.save", O_WRONLY | O_CREAT, S_IRWXU);
                 Word wordSave = malloc(27*sizeof(char));
-                dico = save_dico(dico,wordSave,0);
+                dico = save_dico(dico,wordSave,0,fd);
+                close(fd);
 				break;
 			case 7 :
                 printf("We will load the dictionary\n");
                 /* dico = load_dictionary()*/
 				break;
+            case 8 :
+                printf("\n\n\n\n\t\t\tGood Bye !!!\t\t\n\n");
+                break;
 			default :
 				printf("Error in the matrix ... \n");
 		}
 	}
 
-	printf("\nMade by MONOT Vincent & VALENTIN Paul\n\n");
+	printf("\n\tMade by MONOT Vincent & VALENTIN Paul\n\n");
 
 	return 0;
 }

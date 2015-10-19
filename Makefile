@@ -10,4 +10,4 @@ main.o : main.c
 	gcc -c main.c
 
 clean:
-	rm -fr *.o dictionary
+	rm -fr *.o dictionary saveDictionary.save

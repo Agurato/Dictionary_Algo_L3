@@ -267,7 +267,7 @@ Dictionary deleteWordRecursive(Dictionary dico, Word word, int position, int las
 	return dico;
 }
 
-Dictionary save_dico(Dictionary dico, Word wordToSave, int position){
+Dictionary save_dico(Dictionary dico, Word wordToSave, int position, int fd){
     /* Ouvrir le fichier de sauvegarde
      * Aller sur le fils gauche tant qu'on ne rencontre pas le caractère '*'
      * Sauvegarder les données dans un fichier
@@ -280,21 +280,27 @@ Dictionary save_dico(Dictionary dico, Word wordToSave, int position){
      * on incréamente l'indice d'un
      * on passe à la prochaine lettre en récursif ce qui fait que quand on aura fini avec ce mot on pourra passer au frère
      * */
-    printf("Position : %d valeur du caractère : %c\n", position, dico->character);
-    if(!emptyDico(dico->leftSon)){
-        wordToSave[position] = dico->character;
-        position ++;
-        dico = save_dico(dico->leftSon, wordToSave, position);
-        /*Placer ici l'algo pour sauver le mot*/
-        int fd ;
-        fd = open("saveDictionary.save", O_WRONLY | O_CREAT, S_IRWXU);
-        write(fd,wordToSave,26);
-        close(fd);
-        /*Fin de l'algo*/
-    }
-    /*Si on a fini le mot on passe au frère droit*/
-    else if(!emptyDico(dico -> rightBrother)){
-        dico = save_dico(dico->rightBrother, wordToSave, position);
+printf("Position : %d valeur du caractère : %c\n", position, dico->character);
+if(!emptyDico(dico)){
+        /*Condition d'arrêt*/
+        if(dico->character == '*'){
+            write(fd,wordToSave,26);
+            write(fd,"\n",1);
+            /*Si la dernière lettre à un frère on y va*/
+         /*   if(!emptyDico(dico->rightBrother))
+                dico = save_dico(dico->rightBrother, wordToSave, position, fd);*/
+        }
+        /*Si il y à un fils on remplit le buffer avec la lettre courante
+         * puis on passe au fils
+         * */
+        if(!emptyDico(dico->leftSon)){
+            wordToSave[position] = dico->character;
+            position++;
+            dico = save_dico(dico->leftSon, wordToSave, position, fd);
+        }
+        if(!emptyDico(dico->rightBrother)){
+            dico = save_dico(dico->rightBrother, wordToSave, position, fd);
+        }
     }
     return dico;
 }
