@@ -21,15 +21,13 @@ int main(int argc, char const *argv[])
                 Word word = malloc(25*sizeof(char));
                 char buf[25] = {0};
                 int d = 0;
-			//	fgets(word, sizeof(word), stdin);
-                
-            //  Il faut vider le buffer après le read sinon on a des problèmes !!
+                // read the word then erase the buffer of stdin
                 do{
                     read(0,word,25);
                     while(d != '\n' && d != EOF){
                         d = getchar();
                     }
-                    printf("Word contient : %s\n",word);
+                    printf("Tapez Entrée\n");
                 }while(getchar() != '\n');
 
 				Word starWord = malloc(strlen(word) + 2);
@@ -90,6 +88,7 @@ int chooseOption() {
 	return choice;
 }
 
+/*Take a character and return only the first (Avoid problems)*/
 int type_n(){
     char *c = malloc(sizeof(char)); 
     
