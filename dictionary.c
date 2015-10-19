@@ -268,20 +268,9 @@ Dictionary deleteWordRecursive(Dictionary dico, Word word, int position, int las
 }
 
 Dictionary save_dico(Dictionary dico, Word wordToSave, int position, int fd){
-    /* Ouvrir le fichier de sauvegarde
-     * Aller sur le fils gauche tant qu'on ne rencontre pas le caractère '*'
-     * Sauvegarder les données dans un fichier
-     * Aller sur le frère droit
-     * C'est du parcours infixe
-     */
-
-    /* On regarde si ce n'est pas la fin du mot si non :
-     * on sauvegarde la lettre dans un tableau de char
-     * on incréamente l'indice d'un
-     * on passe à la prochaine lettre en récursif ce qui fait que quand on aura fini avec ce mot on pourra passer au frère
-     * */
-printf("Position : %d valeur du caractère : %c\n", position, dico->character);
-if(!emptyDico(dico)){
+    
+    printf("Position : %d valeur du caractère : %c\n", position, dico->character);
+    if(!emptyDico(dico)){
         /*Condition d'arrêt*/
         if(dico->character == '*'){
             write(fd,wordToSave,26);
