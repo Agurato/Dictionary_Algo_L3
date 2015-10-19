@@ -278,22 +278,25 @@ Dictionary save_dico(Dictionary dico, Word wordToSave, int position){
     /* On regarde si ce n'est pas la fin du mot si non :
      * on sauvegarde la lettre dans un tableau de char
      * on incréamente l'indice d'un
-     * on passe à la prochaine lettre en récursif ce qui fait que quand on aura fini avec ce mot on pourra passer au frère*/
-    if(dico->leftSon->character != '*'){
+     * on passe à la prochaine lettre en récursif ce qui fait que quand on aura fini avec ce mot on pourra passer au frère
+     * */
+    printf("Position : %d valeur du caractère : %c\n", position, dico->character);
+    if(!emptyDico(dico->leftSon)){
         wordToSave[position] = dico->character;
         position ++;
         dico = save_dico(dico->leftSon, wordToSave, position);
         /*Placer ici l'algo pour sauver le mot*/
-        int fd = open("./saveDictionary.save", O_WRONLY);
+        int fd ;
+        fd = open("saveDictionary.save", O_WRONLY | O_CREAT, S_IRWXU);
         write(fd,wordToSave,26);
         close(fd);
         /*Fin de l'algo*/
     }
     /*Si on a fini le mot on passe au frère droit*/
-    else if(dico -> rightBrother != NULL){
+    else if(!emptyDico(dico -> rightBrother)){
         dico = save_dico(dico->rightBrother, wordToSave, position);
     }
-
+    return dico;
 }
 
 Dictionary load_dico(){
