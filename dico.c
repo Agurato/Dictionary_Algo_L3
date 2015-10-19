@@ -198,15 +198,7 @@ Dictionary addWordRecursive(Dictionary dico, Word word, int position) {
 }
 
 Dictionary deleteWordRecursive(Dictionary dico, Word word, int position, int lastBrother) {
-	// printf("position=%d/%d : %c-%c \\ lastBrother=%d\n", position, (int) strlen(word)-1, word[position], dico->character, lastBrother);
-	Boolean isLeftSon = false;
 	if(position < strlen(word)-2) {
-		if(position == lastBrother) {
-			if(dico->leftSon->character == word[position+1]) {
-				isLeftSon = true;
-			}
-		}
-
 		if(dico->character == word[position]) {
 			dico->leftSon = deleteWordRecursive(dico->leftSon, word, position+1, lastBrother);
 		}
@@ -219,10 +211,12 @@ Dictionary deleteWordRecursive(Dictionary dico, Word word, int position, int las
 	if(position > lastBrother) {
 		printf("Deleting son of word[%d]='%c' : '%c'\n", position, word[position], word[position+1]);
 		free(dico->leftSon);
+		dico->leftSon = NULL;
 	}
 	else if((position == lastBrother)) {
 		printf("Deleting son of word[%d]='%c' : '%c'\n", position, word[position], word[position+1]);
 		free(dico->leftSon);
+		dico->leftSon = NULL;
 	}
 	else if(position == lastBrother-1) {
 		// If he is the left son
@@ -257,6 +251,7 @@ Dictionary deleteWordRecursive(Dictionary dico, Word word, int position, int las
 						}
 						else {
 							free(sonDico->rightBrother);
+							sonDico->rightBrother = NULL;
 							return dico;
 						}
 					}
