@@ -27,5 +27,5 @@ Dictionary addWord(Dictionary dico, Word word);
 Dictionary last_letter(Dictionary dico, Word word);
 Dictionary delete_word(Dictionary dictionary, Word word);
 
-Dictionary save_dico(Dictionary,Word,int);
+Dictionary save_dico(Dictionary dico, Word wordToSave, int position, int fd);
 Dictionary load_dico();
