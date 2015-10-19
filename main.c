@@ -18,13 +18,19 @@ int main(int argc, char const *argv[])
 		switch(choice) {
 			case 1 :
 				printf("Please enter the word you desire to add : \n");
-				Word word = malloc(25*sizeof(char));
+                Word word = malloc(25*sizeof(char));
                 char buf[25] = {0};
+                int d = 0;
 			//	fgets(word, sizeof(word), stdin);
-                while(getchar() != '\n'){
+                
+            //  Il faut vider le buffer après le read sinon on a des problèmes !!
+                do{
                     read(0,word,25);
+                    while(d != '\n' && d != EOF){
+                        d = getchar();
+                    }
                     printf("Word contient : %s\n",word);
-                }
+                }while(getchar() != '\n');
 
 				Word starWord = malloc(strlen(word) + 2);
 				strcpy(starWord, word);
@@ -67,14 +73,14 @@ int chooseOption() {
 
 	do {
 		printf("Please choose an option in the following list :\n");
-		printf("    1) Add a word.\n");
-		printf("    2) Delete a word.\n");
-		printf("    3) Display dictionary.\n");
-		printf("    4) Is the word in the dictionary?\n");
-		printf("    5) Empty dictionary.\n");
-		printf("    6) Save dictionary.\n");
-		printf("    7) Load dictionary.\n\n");
-		printf("    8) Exit software\n\n");
+		printf("\t1) Add a word.\n");
+		printf("\t2) Delete a word.\n");
+		printf("\t3) Display dictionary.\n");
+		printf("\t4) Is the word in the dictionary?\n");
+		printf("\t5) Empty dictionary.\n");
+		printf("\t6) Save dictionary.\n");
+		printf("\t7) Load dictionary.\n\n");
+		printf("\t8) Exit software\n\n");
 
 		printf("Enter your choice : ");
         choice = type_n();
@@ -86,8 +92,9 @@ int chooseOption() {
 
 int type_n(){
     char *c = malloc(sizeof(char)); 
-    read(0,c,1);
-    if(isdigit(*c))
+    
+    scanf("%s",c);
+       if(isdigit(*c))
         return (int) *c - '0';
     return -1;
 }
