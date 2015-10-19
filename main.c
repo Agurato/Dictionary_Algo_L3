@@ -78,16 +78,17 @@ int chooseOption() {
 
 		printf("Enter your choice : ");
         choice = type_n();
-		printf("\n");
+		printf("choice : %d\n",choice);
 	} while((choice < 1 || choice > 8));
 
 	return choice;
 }
 
 int type_n(){
-    char c = getchar();
-    if(isdigit(c))
-        return (int) c - '0';
+    char *c = malloc(sizeof(char)); 
+    read(0,c,1);
+    if(isdigit(*c))
+        return (int) *c - '0';
     return -1;
 }
 
