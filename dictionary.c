@@ -28,10 +28,12 @@ Boolean wordBelongs(Dictionary dico, Word word) {
 	// lettersChecked is the number of letters of the word belonging to the dictionary
 
 	// We add a star '*' at the end of the word
+    
 	Word starWord = malloc(strlen(word) + 2);
 	strcpy(starWord, word);
-	strcat(starWord, "*");
+//	strcat(starWord, "*");
 
+    
 	if(emptyDico(dico)) {
 		return false;
 	}
@@ -120,74 +122,26 @@ Dictionary displayDico(Dictionary dico, Word currentWord) {
 }
 
 Dictionary addWordRecursive(Dictionary dico, Word word, int position) {
-	// If we didn't finish to add the word yet
 	if(position < strlen(word)) {
-		printf("\nword[%d]='%c'", position, word[position]);
-		// If there is a letter on the dico
-		if(! emptyDico(dico)) {
-			printf(" \\ dico->character='%c'", dico->character);
-			// If the letter of the dictionary is inferior to the letter of the word 
-			if(dico->character < word[position]) {
-				// If there is a right brother
-				if(! emptyDico(dico->rightBrother)) {
-					// If the letter of the right brother is inferior or equal to the letter of the word
-					if(dico->rightBrother->character <= word[position]) {
-						// We're going on with the right brother
-						dico->rightBrother = addWordRecursive(dico->rightBrother, word, position);
-					}
-					// If the letter of the brother is superior to the letter of the word
-					else {
-						// We create a new letter
-						Dictionary newLetter = createLetter(word[position]);
-						// The right brother of the new letter is the right brother of the dico
-						newLetter->rightBrother = dico->rightBrother;
-						// The new letter is the right brother of the dico
-						dico->rightBrother = newLetter;
-						// We add the next letter on the son
-						dico->leftSon = addWordRecursive(dico->leftSon, word, position+1);
-					}
-				}
-				// If there isn't a right brother
-				else {
-					printf(" \\ Adding it ...");
-					// We add the letter of the word as the right brother
-					dico->rightBrother = createLetter(word[position]);
-					// We add the next letter on the right brother's son
-					dico->rightBrother->leftSon = addWordRecursive(dico->rightBrother->leftSon, word, position+1);
-				}
+		char lowerChar = tolower(word[position]);
+		if(emptyDico(dico)) {
+			dico = createLetter(lowerChar);
+			dico->leftSon = addWordRecursive(dico->leftSon, word, position+1);
+		}
+		else {
+			if(dico->character < lowerChar) {
+				dico->rightBrother = addWordRecursive(dico->rightBrother, word, position);
 			}
-			// If the letter of the dico is equal to the letter of the word
-			else if(dico->character == word[position]) {
-				// If there is a son
-				if(! emptyDico(dico->leftSon)) {
-					// If the letter of the son is superior to the letter of the next letter of the word
-					if(dico->leftSon->character > word[position+1]) {
-						// We create a new letter with the next letter of the word
-						Dictionary newLetter = createLetter(word[position+1]);
-						// The left son of the dico is now the right brother of the new letter
-						newLetter->rightBrother = dico->leftSon;
-						// The new letter is the left son of the dico
-						dico->leftSon = newLetter;
-					}
-				}
-				// We add the next letter on the son
+			else if(dico->character == lowerChar) {
 				dico->leftSon = addWordRecursive(dico->leftSon, word, position+1);
 			}
 			else {
-				printf("dico->character > word[position] : PROBLEM\n");
+				Dictionary tempDico = createLetter(lowerChar);
+				tempDico->rightBrother = dico;
+				dico = tempDico;
+				dico->leftSon = addWordRecursive(dico->leftSon, word, position+1);
 			}
 		}
-		// If there isn't any letter on the dico
-		else {
-			printf(" \\ Adding it ...");
-			// We create the letter
-			dico = createLetter(word[position]);
-			// We add the new letter on the son
-			dico->leftSon = addWordRecursive(dico->leftSon, word, position+1);
-		}
-	}
-	else {
-		return dico;
 	}
 
 	return dico;
@@ -294,5 +248,7 @@ Dictionary save_dico(Dictionary dico, Word wordToSave, int fd){
 }
 
 Dictionary load_dico(){
-    /*Boucle while + addWord pour chaque mot*/
+    /*On prends la ligne, on l'add puis on recommence*/
+   /* while(fread() != EOF){
+    }*/
 }

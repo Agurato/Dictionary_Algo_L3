@@ -6,7 +6,8 @@ Word wordToEnter();
 
 int main(int argc, char const *argv[])
 {
-    int choice = 0;
+    int choice = 0,fd;
+    int booleen = 0;
     Word word;
 	printf("\t\tHello and welcome to the dictionary factory !\n");
 
@@ -24,7 +25,7 @@ int main(int argc, char const *argv[])
 				dico = addWordRecursive(dico, word, 0);
 				break;
 			case 3 :
-                displayDico(dico,"" );
+                displayDico(dico,"");
 				break;
 			case 2 :
                 printf("Please enter the word you desire to delete : \n");
@@ -32,19 +33,18 @@ int main(int argc, char const *argv[])
 				/*dico = deleteWordRecursive();*/
 				break;
 			case 4 :
-                int boolean = 0;
                 printf("Please enter the word you desire to check : \n");
                 word = wordToEnter();
-                boolean = wordBelongs(dico, word);
-                if(boolean)
+                booleen = wordBelongs(dico, word);
+                if(booleen)
                     printf("\n\n\n\t\tLe mot est bien dans le dictionnaire\n\n\n");
                 else
-                    pritnf("\n\n\n\t\tLe mot n'est pas dans le dictionnaire\n\n\n");
+                    printf("\n\n\n\t\tLe mot n'est pas dans le dictionnaire\n\n\n");
 				break;
 			case 5 :
+                printf("Work in progress\n");
 				break;
 			case 6 :
-                int fd;
                 fd = open("saveDictionary.save", O_WRONLY | O_CREAT | O_TRUNC, S_IRWXU);
                 Word wordSave = malloc(27*sizeof(char));
                 dico = save_dico(dico,wordSave,fd);
@@ -54,7 +54,7 @@ int main(int argc, char const *argv[])
                 /* dico = load_dictionary()*/
 				break;
             case 8 :
-                printf("\n\n\n\n\t\t\tGood Bye !!!\t\t\n\n");
+                printf("\n\n\n\n\t\t\tGood Bye !!!\t\t\n\n\n\n");
                 break;
 			default :
 				printf("Error in the matrix ... \n");
@@ -97,6 +97,7 @@ int type_n(){
         return (int) *c - '0';
     return -1;
 }
+
 Word wordToEnter(){
     Word word = malloc(25*sizeof(char));
         char buf[25] = {0};
@@ -114,5 +115,6 @@ Word wordToEnter(){
 		strcpy(starWord, word);
         starWord[strlen(word)-1] = '\0';
 		strcat(starWord, "*");
+
     return starWord;
 }
