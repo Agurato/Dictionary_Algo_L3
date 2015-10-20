@@ -117,19 +117,28 @@ Dictionary displayDico(Dictionary dico, Word currentWord) {
 }
 
 Dictionary addWordRecursive(Dictionary dico, Word word, int position) {
+	/* If we didn't finish the word yet*/
 	if(position < strlen(word)) {
+		/* Here we are using only lower cases */
 		char lowerChar = tolower(word[position]);
+		/* If the dictionary is empty */
 		if(emptyDico(dico)) {
+			/* We create the new letter and add the next letter recursively */
 			dico = createLetter(lowerChar);
 			dico->leftSon = addWordRecursive(dico->leftSon, word, position+1);
 		}
+		/* If the dictionary isn't empty */
 		else {
+			/* If the character in the dico is inferior to the character of the word */
 			if(dico->character < lowerChar) {
+				/* We search for the right brother */
 				dico->rightBrother = addWordRecursive(dico->rightBrother, word, position);
 			}
+			/* If we found the character corresponding to the word, we add the next letter recursively */
 			else if(dico->character == lowerChar) {
 				dico->leftSon = addWordRecursive(dico->leftSon, word, position+1);
 			}
+			/* If we didn't find it, we create it and make the link and add the next letter recursively */
 			else {
 				Dictionary tempDico = createLetter(lowerChar);
 				tempDico->rightBrother = dico;
@@ -236,89 +245,6 @@ int lastBrotherPosition(Dictionary dico, Word word) {
 	}
 	return position;
 }
-
-/*
-Dictionary addWord(Dictionary dico, Word word) {
-	printf("Trying to add the word \"%s\" into the dictionary\n", word);
-
-	if(wordBelongs(dico, word)) {
-		printf("The word \"%s\" already belongs to the dictionary\n", word);
-		return dico;
-	}
-	else {
-		printf("The word \"%s\" doesn't belong to the dictionary yet\n", word);
-	}
-
-	int currentChar = 0;
-	Dictionary newLetter = createDictionary();
-	Dictionary changeLetter = createDictionary();
-
-	// We add a star '*' at the end of the word
-	Word starWord = malloc(strlen(word) + 2);
-	strcpy(starWord, word);
-	strcat(starWord, "*");
-
-	for(currentChar = 0 ; starWord[currentChar] != '\0' ; currentChar ++) {
-		printf("\tAdding starWord[%d] = '%c' \n", currentChar, starWord[currentChar]);
-		// If dictionary is empty, we add the letter and go on to the next 
-		if(dico->character == '\0') {
-			printf("\tdico is empty\n");
-			changeLetter = createLetter(starWord[currentChar], dico->father);
-			changeLetter->leftSon = createLetter('\0', dico);
-			dico = changeLetter;
-			dico = dico->leftSon;
-		}
-		else {
-			printf("\tdico isn't empty\n");
-			while(dico->character < starWord[currentChar]) {
-				printf("\t\tdico->character('%c') < starWord[currentChar]('%c')\n", dico->character, starWord[currentChar]);
-				if(emptyDico(dico->rightBrother)) {
-					printf("\t\tdico->rightBrother is empty\n");
-					newLetter = createLetter(starWord[currentChar], dico->father);
-					newLetter->leftBrother = dico;
-					dico->rightBrother = newLetter;
-					dico = dico->rightBrother;
-				}
-				else {
-					printf("\t\tdico->rightBrother isn't empty\n");
-					if(dico->rightBrother->character <= starWord[currentChar]) {
-						dico = dico->rightBrother;
-					}
-					else {
-						newLetter = createLetter(starWord[currentChar], dico->father);
-						newLetter->leftBrother = dico;
-						newLetter->rightBrother = dico->rightBrother;
-						dico->rightBrother->leftBrother = newLetter;
-						dico->rightBrother = newLetter;
-						dico = dico->rightBrother;
-					}
-				}
-			}
-			if(dico->character == starWord[currentChar]) {
-				printf("\t\tdico->character('%c') = starWord[currentChar]('%c')\n", dico->character, starWord[currentChar]);
-				Dictionary son = createLetter('\0', dico);
-				dico->leftSon = son;
-				dico = son;
-
-			}
-			else {
-				printf("\t(dico->character = '%c') != (starWord[currentChar] = '%c')\n", dico->character,starWord[currentChar]);
-			}
-		}
-	}
-
-	printf("\t\"%s\" added to the dictionary\n", word);
-
-	while(dico->father != NULL) {
-		dico = dico->father;
-	}
-	while(dico->leftBrother != NULL) {
-		dico = dico->leftBrother;
-	}
-
-	return dico;
-}
-*/
 
 /* Search the word with belongs_word and delete the Word*/
 // Dictionary delete_word(Dictionary dictionary, Word word){

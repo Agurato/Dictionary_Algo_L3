@@ -13,7 +13,6 @@ int main(int argc, char const *argv[])
 	strcat(starWord, "*");
 	if(! wordBelongs(dico, newWord)) {
 		dico = addWordRecursive(dico, starWord, 0);
-		printf("\n");
 	}
 
 	newWord = "Avion";
@@ -22,7 +21,6 @@ int main(int argc, char const *argv[])
 	strcat(starWord, "*");
 	if(! wordBelongs(dico, newWord)) {
 		dico = addWordRecursive(dico, starWord, 0);
-		printf("\n");
 	}
 	
 	newWord = "Batiment";
@@ -31,7 +29,6 @@ int main(int argc, char const *argv[])
 	strcat(starWord, "*");
 	if(! wordBelongs(dico, newWord)) {
 		dico = addWordRecursive(dico, starWord, 0);
-		printf("\n");
 	}
 
 	newWord = "Bataille";
@@ -40,7 +37,6 @@ int main(int argc, char const *argv[])
 	strcat(starWord, "*");
 	if(! wordBelongs(dico, newWord)) {
 		dico = addWordRecursive(dico, starWord, 0);
-		printf("\n");
 	}
 
 	newWord = "Batman";
@@ -49,7 +45,6 @@ int main(int argc, char const *argv[])
 	strcat(starWord, "*");
 	if(! wordBelongs(dico, newWord)) {
 		dico = addWordRecursive(dico, starWord, 0);
-		printf("\n");
 	}
 	
 	newWord = "Bateaux";
@@ -58,10 +53,9 @@ int main(int argc, char const *argv[])
 	strcat(starWord, "*");
 	if(! wordBelongs(dico, newWord)) {
 		dico = addWordRecursive(dico, starWord, 0);
-		printf("\n");
 	}
 	
-	printf("\n\nDisplaying dictionary : \n\n");
+	printf("\nDisplaying dictionary : \n\n");
 	displayDico(dico, "");
 	/*
 	Word oldWord = "Bateaux";

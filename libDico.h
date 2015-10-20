@@ -9,7 +9,6 @@
 typedef struct node {
 	char character;
 	struct node *leftSon, *rightBrother;
-	// struct node *father, *leftBrother;
 }*Dictionary;
 
 typedef char* Word;
