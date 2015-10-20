@@ -267,28 +267,27 @@ Dictionary deleteWordRecursive(Dictionary dico, Word word, int position, int las
 	return dico;
 }
 
-Dictionary save_dico(Dictionary dico, Word wordToSave, int position, int fd){
-    
-    printf("Position : %d valeur du caractère : %c\n", position, dico->character);
+Dictionary save_dico(Dictionary dico, Word wordToSave, int fd){
     if(!emptyDico(dico)){
-        /*Condition d'arrêt*/
         if(dico->character == '*'){
-            write(fd,wordToSave,26);
+            write(fd,wordToSave,strlen(wordToSave));
             write(fd,"\n",1);
-            /*Si la dernière lettre à un frère on y va*/
-         /*   if(!emptyDico(dico->rightBrother))
-                dico = save_dico(dico->rightBrother, wordToSave, position, fd);*/
         }
+        
         /*Si il y à un fils on remplit le buffer avec la lettre courante
          * puis on passe au fils
          * */
         if(!emptyDico(dico->leftSon)){
-            wordToSave[position] = dico->character;
-            position++;
-            dico = save_dico(dico->leftSon, wordToSave, position, fd);
+            printf("valeur du caractère : %c wordToSave : %s\n", dico->character, wordToSave);
+            int length = strlen(wordToSave);
+			Word newWord = malloc(length+2);
+			strcpy(newWord, wordToSave);	
+			newWord[length] = dico->character;
+			newWord[length+1] = '\0';
+            dico->leftSon = save_dico(dico->leftSon, newWord, fd);
         }
         if(!emptyDico(dico->rightBrother)){
-            dico = save_dico(dico->rightBrother, wordToSave, position, fd);
+            dico->rightBrother = save_dico(dico->rightBrother, wordToSave, fd);
         }
     }
     return dico;

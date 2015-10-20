@@ -30,8 +30,9 @@ int main(int argc, char const *argv[])
                     printf("Tapez Entrée\n");
                 }while(getchar() != '\n');
 
-				Word starWord = malloc(strlen(word) + 2);
+				Word starWord = malloc(strlen(word) + 1);
 				strcpy(starWord, word);
+                starWord[strlen(word)-1] = '\0';
 				strcat(starWord, "*");
 				dico = addWordRecursive(dico, starWord, 0);
 				break;
@@ -50,9 +51,9 @@ int main(int argc, char const *argv[])
 			case 6 :
 				printf("Searching for word in dictionary ... \n");
                 int fd;
-                fd = open("saveDictionary.save", O_WRONLY | O_CREAT, S_IRWXU);
+                fd = open("saveDictionary.save", O_WRONLY | O_CREAT | O_TRUNC, S_IRWXU);
                 Word wordSave = malloc(27*sizeof(char));
-                dico = save_dico(dico,wordSave,0,fd);
+                dico = save_dico(dico,wordSave,fd);
                 close(fd);
 				break;
 			case 7 :
