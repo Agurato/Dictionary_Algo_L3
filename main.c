@@ -2,10 +2,12 @@
 
 int chooseOption();
 int type_n();
+Word wordToEnter();
+
 int main(int argc, char const *argv[])
 {
     int choice = 0;
-
+    Word word;
 	printf("\t\tHello and welcome to the dictionary factory !\n");
 
 	Dictionary dico = createDictionary();
@@ -18,38 +20,30 @@ int main(int argc, char const *argv[])
 		switch(choice) {
 			case 1 :
 				printf("Please enter the word you desire to add : \n");
-                Word word = malloc(25*sizeof(char));
-                char buf[25] = {0};
-                int d = 0;
-                // read the word then erase the buffer of stdin
-                do{
-                    read(0,word,25);
-                    while(d != '\n' && d != EOF){
-                        d = getchar();
-                    }
-                    printf("Tapez Entrée\n");
-                }while(getchar() != '\n');
-
-				Word starWord = malloc(strlen(word) + 1);
-				strcpy(starWord, word);
-                starWord[strlen(word)-1] = '\0';
-				strcat(starWord, "*");
-				dico = addWordRecursive(dico, starWord, 0);
-				break;
-			case 2 :
-				printf("Displaying dictionaries ...\n");
+                word = wordToEnter();
+				dico = addWordRecursive(dico, word, 0);
 				break;
 			case 3 :
-				printf("Deleting dictionary ... \n");
+                displayDico(dico,"" );
+				break;
+			case 2 :
+                printf("Please enter the word you desire to delete : \n");
+                word = wordToEnter();
+				/*dico = deleteWordRecursive();*/
 				break;
 			case 4 :
-				printf("Adding word to dictionary ... \n");
+                int boolean = 0;
+                printf("Please enter the word you desire to check : \n");
+                word = wordToEnter();
+                boolean = wordBelongs(dico, word);
+                if(boolean)
+                    printf("\n\n\n\t\tLe mot est bien dans le dictionnaire\n\n\n");
+                else
+                    pritnf("\n\n\n\t\tLe mot n'est pas dans le dictionnaire\n\n\n");
 				break;
 			case 5 :
-				printf("Deleting word in dictionary ... \n");
 				break;
 			case 6 :
-				printf("Searching for word in dictionary ... \n");
                 int fd;
                 fd = open("saveDictionary.save", O_WRONLY | O_CREAT | O_TRUNC, S_IRWXU);
                 Word wordSave = malloc(27*sizeof(char));
@@ -57,7 +51,6 @@ int main(int argc, char const *argv[])
                 close(fd);
 				break;
 			case 7 :
-                printf("We will load the dictionary\n");
                 /* dico = load_dictionary()*/
 				break;
             case 8 :
@@ -104,4 +97,22 @@ int type_n(){
         return (int) *c - '0';
     return -1;
 }
+Word wordToEnter(){
+    Word word = malloc(25*sizeof(char));
+        char buf[25] = {0};
+        int d = 0;
+        // read the word then erase the buffer of stdin
+        do{
+            read(0,word,25);
+            while(d != '\n' && d != EOF){
+                d = getchar();
+            }
+            printf("Tapez Entrée\n");
+        }while(getchar() != '\n');
 
+		Word starWord = malloc(strlen(word) + 1);
+		strcpy(starWord, word);
+        starWord[strlen(word)-1] = '\0';
+		strcat(starWord, "*");
+    return starWord;
+}
