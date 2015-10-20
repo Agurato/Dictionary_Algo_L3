@@ -16,6 +16,15 @@ int main(int argc, char const *argv[])
 		printf("\n");
 	}
 
+	newWord = "Avion";
+	starWord = malloc(strlen(newWord) + 2);
+	strcpy(starWord, newWord);
+	strcat(starWord, "*");
+	if(! wordBelongs(dico, newWord)) {
+		dico = addWordRecursive(dico, starWord, 0);
+		printf("\n");
+	}
+	
 	newWord = "Batiment";
 	starWord = malloc(strlen(newWord) + 2);
 	strcpy(starWord, newWord);
@@ -54,7 +63,7 @@ int main(int argc, char const *argv[])
 	
 	printf("\n\nDisplaying dictionary : \n\n");
 	displayDico(dico, "");
-	
+	/*
 	Word oldWord = "Bateaux";
 	starWord = malloc(strlen(oldWord) + 2);
 	strcpy(starWord, oldWord);
@@ -68,7 +77,7 @@ int main(int argc, char const *argv[])
 	
 	printf("Displaying dictionary : \n\n");
 	displayDico(dico, "");
-	
+	*/
 	printf("\n");
 
 	return 0;
