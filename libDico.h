@@ -28,3 +28,4 @@ Dictionary delete_word(Dictionary dictionary, Word word);
 
 Dictionary save_dico(Dictionary dico, Word wordToSave, int fd);
 Dictionary load_dico();
+Dictionary removeDictionary(Dictionary);

@@ -247,6 +247,18 @@ Dictionary save_dico(Dictionary dico, Word wordToSave, int fd){
     return dico;
 }
 
+Dictionary removeDictionary(Dictionary dico){
+    if(!emptyDico(dico)){
+        if(dico->leftSon != NULL)
+            dico->leftSon = removeDictionary(dico->leftSon);
+        if(dico->rightBrother != NULL)
+            dico->rightBrother = removeDictionary(dico->rightBrother);
+        free(dico);
+        dico = NULL;
+    }
+    return dico;
+}
+
 Dictionary load_dico(){
     /*On prends la ligne, on l'add puis on recommence*/
    /* while(fread() != EOF){

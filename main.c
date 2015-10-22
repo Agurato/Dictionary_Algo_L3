@@ -42,7 +42,8 @@ int main(int argc, char const *argv[])
                     printf("\n\n\n\t\tLe mot n'est pas dans le dictionnaire\n\n\n");
 				break;
 			case 5 :
-                printf("Work in progress\n");
+                dico = removeDictionary(dico);
+                printf("The dictionary is remove.\n");
 				break;
 			case 6 :
                 fd = open("saveDictionary.save", O_WRONLY | O_CREAT | O_TRUNC, S_IRWXU);
@@ -75,7 +76,7 @@ int chooseOption() {
 		printf("\t2) Delete a word.\n");
 		printf("\t3) Display dictionary.\n");
 		printf("\t4) Is the word in the dictionary?\n");
-		printf("\t5) Empty dictionary.\n");
+		printf("\t5) Remove dictionary.\n");
 		printf("\t6) Save dictionary.\n");
 		printf("\t7) Load dictionary.\n\n");
 		printf("\t8) Exit software\n\n");
