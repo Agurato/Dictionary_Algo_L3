@@ -23,8 +23,6 @@ Dictionary addWordRecursive(Dictionary dico, Word word, int position);
 Dictionary deleteWordRecursive(Dictionary dico, Word word, int position, int lastBrother);
 int lastBrotherPosition(Dictionary dico, Word word);
 Dictionary addWord(Dictionary dico, Word word);
-Dictionary last_letter(Dictionary dico, Word word);
-Dictionary delete_word(Dictionary dictionary, Word word);
 
 Dictionary save_dico(Dictionary dico, Word wordToSave, int fd);
 Dictionary load_dico();

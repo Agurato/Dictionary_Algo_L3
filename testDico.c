@@ -6,7 +6,7 @@
 int main(int argc, char const *argv[])
 {
 	Dictionary dico = createDictionary();
-	
+
 	Word newWord = "Bateau";
 	Word starWord = malloc(strlen(newWord) + 2);
 	strcpy(starWord, newWord);
@@ -22,7 +22,7 @@ int main(int argc, char const *argv[])
 	if(! wordBelongs(dico, newWord)) {
 		dico = addWordRecursive(dico, starWord, 0);
 	}
-	
+
 	newWord = "Batiment";
 	starWord = malloc(strlen(newWord) + 2);
 	strcpy(starWord, newWord);
@@ -46,7 +46,7 @@ int main(int argc, char const *argv[])
 	if(! wordBelongs(dico, newWord)) {
 		dico = addWordRecursive(dico, starWord, 0);
 	}
-	
+
 	newWord = "Bateaux";
 	starWord = malloc(strlen(newWord) + 2);
 	strcpy(starWord, newWord);
@@ -54,11 +54,11 @@ int main(int argc, char const *argv[])
 	if(! wordBelongs(dico, newWord)) {
 		dico = addWordRecursive(dico, starWord, 0);
 	}
-	
+
 	printf("\nDisplaying dictionary : \n\n");
 	displayDico(dico, "");
-	/*
-	Word oldWord = "Bateaux";
+
+	Word oldWord = "avion";
 	starWord = malloc(strlen(oldWord) + 2);
 	strcpy(starWord, oldWord);
 	strcat(starWord, "*");
@@ -68,10 +68,10 @@ int main(int argc, char const *argv[])
 		dico = deleteWordRecursive(dico, starWord, 0, lastBro);
 		printf("\n");
 	}
-	
+
 	printf("Displaying dictionary : \n\n");
 	displayDico(dico, "");
-	*/
+
 	printf("\n");
 
 	return 0;
