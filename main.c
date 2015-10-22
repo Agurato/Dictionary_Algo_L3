@@ -14,6 +14,7 @@ int main(int argc, char const *argv[])
 	Dictionary dico = createDictionary();
 	
 	while(choice != 8) {
+        system("clear");
 		choice = chooseOption();
 
 		/* Do the selected option */
@@ -25,7 +26,11 @@ int main(int argc, char const *argv[])
 				dico = addWordRecursive(dico, word, 0);
 				break;
 			case 3 :
-                displayDico(dico,"");
+                    displayDico(dico,"");
+                    while(getchar() != '\n'){
+                        printf("Enter for continue\n");    
+                    }
+                    while(getchar() != '\n'){}
 				break;
 			case 2 :
                 printf("Please enter the word you desire to delete : \n");
@@ -40,6 +45,7 @@ int main(int argc, char const *argv[])
                     printf("\n\n\n\t\tLe mot est bien dans le dictionnaire\n\n\n");
                 else
                     printf("\n\n\n\t\tLe mot n'est pas dans le dictionnaire\n\n\n");
+                    while(getchar() != '\n'){}
 				break;
 			case 5 :
                 dico = removeDictionary(dico);
