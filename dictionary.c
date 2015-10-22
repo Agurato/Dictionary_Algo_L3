@@ -22,7 +22,7 @@ int lastBrotherPosition(Dictionary dico, Word word) {
 
 	Word starWord = malloc(strlen(word) + 2);
 	strcpy(starWord, word);
-	strcat(starWord, "*");
+//	strcat(starWord, "*");
 
 	for(currentChar = 0 ; starWord[currentChar] != '\0' ; currentChar ++) {
 		char lowerChar = tolower(starWord[currentChar]);

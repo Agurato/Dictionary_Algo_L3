@@ -8,6 +8,7 @@ int main(int argc, char const *argv[])
 {
     int choice = 0,fd;
     int booleen = 0;
+    int lastBrother;
     Word word;
 	printf("\t\tHello and welcome to the dictionary factory !\n");
 
@@ -35,7 +36,8 @@ int main(int argc, char const *argv[])
 			case 2 :
                 printf("Please enter the word you desire to delete : \n");
                 word = wordToEnter();
-				/*dico = deleteWordRecursive();*/
+                lastBrother = lastBrotherPosition(dico,word);
+				dico = deleteWordRecursive(dico, word, 0, lastBrother);
 				break;
 			case 4 :
                 printf("Please enter the word you desire to check : \n");
