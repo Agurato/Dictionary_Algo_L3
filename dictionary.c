@@ -227,7 +227,23 @@ Dictionary removeDictionary(Dictionary dico){
 }
 
 Dictionary load_dico(){
-    /*On prends la ligne, on l'add puis on recommence*/
-   /* while(fread() != EOF){
-    }*/
+    Dictionary dico = createDictionary();
+    FILE *file;
+    char *word = malloc(27*sizeof(char));
+    int length;
+    file = fopen("saveDictionary.save", "r");
+   if(file != NULL){
+        while(fgets(word, 27, file) != NULL){
+            length = strlen(word);
+            char *newWord = malloc(length+1);
+            strcpy(newWord, word);
+            newWord[length-1] = '*';
+            dico = addWordRecursive(dico, newWord,0);
+        }
+   }else{
+       printf("Impossible de charger le fichier\n");
+   }
+
+    fclose(file);
+    return dico;
 }

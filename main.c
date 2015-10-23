@@ -6,8 +6,9 @@ Word wordToEnter();
 
 int main(int argc, char const *argv[])
 {
+    system("clear");
     int choice = 0,fd;
-    int booleen = 0;
+    int booleen = 0,d;
     int lastBrother;
     Word word;
 	printf("\t\tHello and welcome to the dictionary factory !\n");
@@ -15,7 +16,6 @@ int main(int argc, char const *argv[])
 	Dictionary dico = createDictionary();
 	
 	while(choice != 8) {
-        system("clear");
 		choice = chooseOption();
 
 		/* Do the selected option */
@@ -26,18 +26,17 @@ int main(int argc, char const *argv[])
                 word = wordToEnter();
 				dico = addWordRecursive(dico, word, 0);
 				break;
-			case 3 :
-                    displayDico(dico,"");
-                    while(getchar() != '\n'){
-                        printf("Enter for continue\n");    
-                    }
-                    while(getchar() != '\n'){}
-				break;
 			case 2 :
                 printf("Please enter the word you desire to delete : \n");
                 word = wordToEnter();
-                lastBrother = lastBrotherPosition(dico,word);
-				dico = deleteWordRecursive(dico, word, 0, lastBrother);
+                if(wordBelongs(dico,word)){
+                    lastBrother = lastBrotherPosition(dico,word);
+				    dico = deleteWordRecursive(dico, word, 0, lastBrother);
+                }else
+                    printf("\t\tThe word doesn't exist\n");
+				break;
+            case 3 :
+                dico = displayDico(dico,"");
 				break;
 			case 4 :
                 printf("Please enter the word you desire to check : \n");
@@ -47,11 +46,10 @@ int main(int argc, char const *argv[])
                     printf("\n\n\n\t\tLe mot est bien dans le dictionnaire\n\n\n");
                 else
                     printf("\n\n\n\t\tLe mot n'est pas dans le dictionnaire\n\n\n");
-                    while(getchar() != '\n'){}
 				break;
 			case 5 :
                 dico = removeDictionary(dico);
-                printf("The dictionary is remove.\n");
+                printf("The dictionary is removed.\n");
 				break;
 			case 6 :
                 fd = open("saveDictionary.save", O_WRONLY | O_CREAT | O_TRUNC, S_IRWXU);
@@ -60,7 +58,7 @@ int main(int argc, char const *argv[])
                 close(fd);
 				break;
 			case 7 :
-                /* dico = load_dictionary()*/
+                 dico = load_dico();
 				break;
             case 8 :
                 printf("\n\n\n\n\t\t\tGood Bye !!!\t\t\n\n\n\n");
@@ -68,6 +66,12 @@ int main(int argc, char const *argv[])
 			default :
 				printf("Error in the matrix ... \n");
 		}
+         while(getchar() != '\n'){
+             while(d != '\n' && d != EOF){
+                d = getchar();
+            }
+        }
+    //    system("clear");
 	}
 
 	printf("\n\tMade by MONOT Vincent & VALENTIN Paul\n\n");
@@ -110,13 +114,12 @@ int type_n(){
 Word wordToEnter(){
     Word word = malloc(25*sizeof(char));
         char buf[25] = {0};
-        int d = 0;
         // read the word then erase the buffer of stdin
         do{
             read(0,word,25);
-            while(d != '\n' && d != EOF){
+            /*while(d != '\n' && d != EOF){
                 d = getchar();
-            }
+            }*/
             printf("Tapez Entrée\n");
         }while(getchar() != '\n');
 
