@@ -14,7 +14,7 @@ int main(int argc, char const *argv[])
 	printf("\t\tHello and welcome to the dictionary factory !\n");
 
 	Dictionary dico = createDictionary();
-	
+
 	while(choice != 8) {
 		choice = chooseOption();
 
@@ -58,7 +58,7 @@ int main(int argc, char const *argv[])
                 close(fd);
 				break;
 			case 7 :
-                 dico = load_dico();
+                dico = load_dico();
 				break;
             case 8 :
                 printf("\n\n\n\n\t\t\tGood Bye !!!\t\t\n\n\n\n");
@@ -95,7 +95,6 @@ int chooseOption() {
 
 		printf("Enter your choice : ");
         choice = type_n();
-		printf("choice : %d\n",choice);
 	} while((choice < 1 || choice > 8));
 
 	return choice;
@@ -103,8 +102,8 @@ int chooseOption() {
 
 /*Take a character and return only the first (Avoid problems)*/
 int type_n(){
-    char *c = malloc(sizeof(char)); 
-    
+    char *c = malloc(sizeof(char));
+
     scanf("%s",c);
        if(isdigit(*c))
         return (int) *c - '0';

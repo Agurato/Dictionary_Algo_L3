@@ -127,7 +127,7 @@ Dictionary displayDico(Dictionary dico, Word currentWord) {
 			// We add the new character to the word to display
 			int length = strlen(currentWord);
 			Word newWord = malloc(length+2);
-			strcpy(newWord, currentWord);	
+			strcpy(newWord, currentWord);
 			newWord[length] = dico->character;
 			newWord[length+1] = '\0';
 
@@ -194,7 +194,7 @@ Dictionary save_dico(Dictionary dico, Word wordToSave, int fd){
             write(fd,wordToSave,strlen(wordToSave));
             write(fd,"\n",1);
         }
-        
+
         /*Si il y à un fils on remplit le buffer avec la lettre courante
          * puis on passe au fils
          * */
@@ -202,7 +202,7 @@ Dictionary save_dico(Dictionary dico, Word wordToSave, int fd){
             //printf("valeur du caractère : %c wordToSave : %s\n", dico->character, wordToSave);
             int length = strlen(wordToSave);
 			Word newWord = malloc(length+2);
-			strcpy(newWord, wordToSave);	
+			strcpy(newWord, wordToSave);
 			newWord[length] = dico->character;
 			newWord[length+1] = '\0';
             dico->leftSon = save_dico(dico->leftSon, newWord, fd);
@@ -232,7 +232,7 @@ Dictionary load_dico(){
     char *word = malloc(27*sizeof(char));
     int length;
     file = fopen("saveDictionary.save", "r");
-   if(file != NULL){
+   	if(file != NULL){
         while(fgets(word, 27, file) != NULL){
             length = strlen(word);
             char *newWord = malloc(length+1);
@@ -240,10 +240,10 @@ Dictionary load_dico(){
             newWord[length-1] = '*';
             dico = addWordRecursive(dico, newWord,0);
         }
-   }else{
-       printf("Impossible de charger le fichier\n");
-   }
+	    fclose(file);
+   	}else{
+    	printf("Impossible de charger le fichier\n");
+   	}
 
-    fclose(file);
     return dico;
 }
